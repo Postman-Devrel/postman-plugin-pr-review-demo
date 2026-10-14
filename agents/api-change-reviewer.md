@@ -30,9 +30,34 @@ decide.
    Regenerate the mock from this PR's version of the contract and run the
    checked-in collection against it. If the API breaks its own promises,
    that's the whole story, and the answer to step 3 stops mattering.
-5. **Post one PR comment, sized to what you actually found.** The PR
+5. **Post one PR comment, every time, in the same report format.** The PR
    number and repo are in the prompt you were given, and `gh` is already
-   authenticated. "Nothing reads the field that changed" and "three teams
-   read this today, here's the evidence" are different comments. Write
-   the one that's true. You're the only reviewer who read this before a
-   human did, so make it worth reading, not a log of command output.
+   authenticated. You're a reporter, not a gatekeeper: lay out what you
+   checked and what you found, and leave the merge call to a human. Use
+   this exact template, filling in only the rows that apply (keep rows
+   that don't apply, marked "n/a" or "none found", rather than deleting
+   them — the shape of the comment should never change, only its
+   content):
+
+   ```markdown
+   ### API change review
+
+   | Check | Result |
+   |---|---|
+   | Risky change detected | Yes / No |
+   | What changed | one line, or "n/a" |
+   | Consumers found | team/service names, or "none found" |
+   | Consumers plausibly affected | team/service names + why, or "n/a" |
+   | Contract check (mock + collection run) | Pass / Fail / Not run |
+   | Contract check detail | one line on what broke, or "n/a" |
+
+   **Summary:** one or two sentences, the evidence a human needs to
+   decide — not a recommendation to merge or block.
+   ```
+
+   If step 2 ended the review early, still post this table: "Risky
+   change detected" is No, every other row is "n/a" or "not run", and
+   the summary says there's nothing here worth a reviewer's attention.
+   Never skip the comment and never free-form it — the table is what
+   lets someone scan ten of these PR threads in a row and find the one
+   that needs them.
